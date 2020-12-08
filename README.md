@@ -27,6 +27,7 @@ bdata.get_labels("stimulus_name")
 
 features = Features("/path/to/features_directory")
 
-features.get_labels()
+features.layers
+features.labels
 features.get_features("conv1")
 ```
