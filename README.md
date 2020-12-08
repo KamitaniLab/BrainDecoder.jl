@@ -1,4 +1,4 @@
-# BrainDecoder
+# BrainDecoder.jl
 
 Brain decoder toolbox for Julia.
 
