@@ -51,6 +51,8 @@ end
 # Features ###################################################################
 
 struct Features
+    layers
+    labels
     get_features
     get_labels
 end
@@ -84,7 +86,7 @@ function Features(_dir::String)
         return feat
     end
     
-    return Features(get_features, get_labels)
+    return Features(layers, labels, get_features, get_labels)
 end
 
 end # module BrainDecoder
