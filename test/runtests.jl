@@ -1,4 +1,5 @@
 using BrainDecoder
+using HDF5
 using Test
 
 @testset "BrainDecoder.jl" begin
@@ -34,5 +35,15 @@ using Test
     @test size(features.get_features("fc8")) == (50, 1000)
     @test size(features.get_features("conv5")) == (50, 256, 13, 13)
     #@test size(features.get_features("conv1")) == (50, 96, 55, 55)
+
+    # save_array
+    data = [1 2 3 4 5
+            6 7 8 9 10]
+    save_array("test_save_array_dense.mat", "data", data)
+
+    data = [1 0 0 0
+            2 2 0 0
+            3 3 3 0]
+    save_array("test_save_array_sparse_2d.mat", "data", data, sparse=true)
 
 end
