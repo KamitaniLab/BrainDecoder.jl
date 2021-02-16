@@ -2,7 +2,8 @@ module BrainDecoder
 
 export BData,
        Features,
-       save_array
+       save_array,
+       load_array
 
 using HDF5
 using MAT
@@ -124,6 +125,42 @@ function save_array(fname, name, array; sparse=false)
     end
     close(h5)
 
+end
+
+function load_array(fname, name)
+
+    function _transpose(a)
+        return permutedims(a, reverse(collect(1:ndims(a))))
+    end
+
+    function _load(obj::HDF5.Dataset)
+        return _transpose(read(obj))
+    end
+
+    function _load(obj::HDF5.Group)
+        is_sparse = read(obj["__bdpy_sparse_arrray"])
+        if is_sparse != 1
+            # Unsupported
+        end
+
+        ary_shape = read(obj["shape"])
+        background = read(obj["background"])
+        index = read(obj["index"]) .+ 1
+        value = read(obj["value"])
+
+        ary = ones(ary_shape...) .* background
+
+        for i = 1:size(index, 1)
+            ary[index[i, :]...] = value[i]
+        end
+        return ary
+    end
+
+    h5 = h5open(fname)
+    ary = _load(h5[name])
+    close(h5)
+
+    return ary
 end
 
 end # module BrainDecoder
